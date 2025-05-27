@@ -915,7 +915,7 @@
                     <div class="stat-label">Session Duration</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">1</div>
+                    <div class="stat-number">1x</div>
                     <div class="stat-label">Monthly Frequency</div>
                 </div>
                 <div class="stat-card">
@@ -958,8 +958,8 @@
 
                 <div class="feature-card">
                     <div class="feature-icon">🔄</div>
-                    <h3 class="feature-title">Recurring Relationships</h3>
-                    <p class="feature-desc">Regular monthly sessions build deeper connections over time, moving beyond surface-level professional relationships.</p>
+                    <h3 class="feature-title">Sustainable Connections</h3>
+                    <p class="feature-desc">Monthly sessions build deeper connections over time without overwhelming busy schedules. Quality relationships develop naturally.</p>
                 </div>
 
                 <div class="feature-card">
@@ -1044,7 +1044,7 @@
                 <div class="event-card">
                     <div class="event-image">♞</div>
                     <div class="event-content">
-                        <div class="event-date">July+ • Ongoing</div>
+                        <div class="event-date">August+ • Monthly</div>
                         <h3 class="event-title">Regular Sessions</h3>
                         <div class="event-location">📍 Berlin • Various Venues</div>
                         <p class="event-desc">
@@ -1197,8 +1197,8 @@
             <div>
                 <h4 class="footer-title">Contact</h4>
                 <ul class="footer-links">
-                    <!-- <li><a href="mailto:hello@founderschess.berlin">hello@founderschess.berlin</a></li> -->
-                    <!-- <li><a href="#">Berlin, Germany</a></li> -->
+                    <!-- <li><a href="mailto:hello@founderschess.berlin">hello@founderschess.berlin</a></li>
+                    <li><a href="#">Berlin, Germany</a></li> -->
                     <li><a href="https://t.me/+Af9-PmUU1NczMjA8">Telegram Community</a></li>
                 </ul>
             </div>
@@ -1271,12 +1271,22 @@
             submitBtn.textContent = 'Submitting...';
             submitBtn.disabled = true;
 
+            // Create URL encoded data instead of FormData for Google Apps Script
+            const params = new URLSearchParams();
+            for (let [key, value] of formData.entries()) {
+                params.append(key, value);
+            }
+
             fetch(scriptURL, {
                     method: 'POST',
-                    body: formData,
-                    mode: 'no-cors' // Important for Google Apps Script
+                    body: params,
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    }
                 })
-                .then(response => {
+                .then(response => response.text())
+                .then(data => {
+                    console.log('Success:', data);
                     submitBtn.textContent = 'Application Sent!';
                     submitBtn.style.background = '#22c55e';
                     this.reset();
@@ -1288,7 +1298,7 @@
                     }, 3000);
                 })
                 .catch(error => {
-                    console.error('Error!', error);
+                    console.error('Error:', error);
                     submitBtn.textContent = 'Error - Try Again';
                     submitBtn.style.background = '#ef4444';
 
